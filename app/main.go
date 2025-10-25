@@ -48,6 +48,13 @@ func main() {
 	var response string 
 	if path == "/" {
 	response = "HTTP/1.1 200 OK\r\n\r\n"
+}else if strings.HasPrefix(path,"/echo/") {
+message:=strings.TrimPrefix(path,"/echo/")
+contentlen :=len(message)
+response = fmt.Sprintf(
+				"HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %d\r\n\r\n%s",
+				contentlen, message)
+
 } else {
 	response = "HTTP/1.1 404 Not Found\r\n\r\n"
 }
@@ -56,6 +63,7 @@ func main() {
 conn.Write([]byte(response))
 conn.Close()
 	
+
 	}
 	 }
 
