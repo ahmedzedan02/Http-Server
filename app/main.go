@@ -28,21 +28,25 @@ func main() {
 			fmt.Println("Error accepting connection:", err)
 			continue
 		}
+		go handleConnection(conn)
+	}
+}
+
 	
+	func handleConnection(conn net.Conn){
+		defer conn.Close()
+
 	
 	//Read Request Line 
 	reader :=bufio.NewReader(conn)
 	reqline,err :=reader.ReadString('\n')
 	if err !=nil{
 		fmt.Println("Error Reading Request ",err)
-		conn.Close()
-        continue
+        return
 	}
 	parts :=strings.Split(reqline," ")
 	if len(parts)<2 {
-		conn.Close()
-		continue
-		
+		return
 	}
 	path :=parts[1]
 	var response string 
@@ -65,5 +69,5 @@ conn.Close()
 	
 
 	}
-	 }
+	 
 
